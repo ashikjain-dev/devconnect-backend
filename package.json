@@ -1,0 +1,24 @@
+{
+  "name": "devconnect-backend",
+  "version": "1.0.0",
+  "description": "This is a backend project which helps developers to connect to other developers",
+  "keywords": [
+    "NodeJS",
+    "ExpressJS",
+    "MongoDB",
+    "and",
+    "REST",
+    "API"
+  ],
+  "license": "ISC",
+  "author": "jain@ashik",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

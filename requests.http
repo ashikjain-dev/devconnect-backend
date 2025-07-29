@@ -1,0 +1,27 @@
+### Get user profile
+
+GET http://localhost:7777/profile/1
+
+### Put user profile
+
+POST http://localhost:7777/profile
+content-Type:application/json
+
+{
+  "name":"firstName",
+  "country":"India"
+}
+
+### Delete user data for id 1
+
+DELETE http://localhost:7777/profile/1
+
+
+### Update user data successfully
+
+PUT http://localhost:7777/profile
+content-Type:application/json
+
+{
+  "name":"Akshay"
+}

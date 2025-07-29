@@ -2,16 +2,32 @@ const express = require("express");
 
 const app = express();
 
-app.use("/profile", (req, res) => {
-  res.send("Profile Page loading ...");
+//middleware to parse JSON and URL encoded data for post method
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// handles get method for a route /profile
+app.get("/profile/:id", (req, res) => {
+  console.log(req.query);
+  console.log(req.params);
+  res.send({ name: "Ashik", country: "India" });
 });
 
-app.use("/feeds", (req, res) => {
-  res.send("ALL Developers profile...");
+// handles post method for a route /profile
+app.post("/profile", (req, res) => {
+  console.log("data =>", req.body);
+  res.send("Data saved successfully...");
 });
 
-app.use("/", (req, res) => {
-  res.send("Home Page loading....");
+//handles put method for a route /profile
+app.put("/profile", (req, res) => {
+  res.send("Updated profile successfully...");
+});
+
+//handles delete method for a route /profile
+app.delete("/profile/:id", (req, res) => {
+  console.log("id of a user to delete the profile", req.params);
+  res.send("Deleted profile successfully...");
 });
 
 app.listen("7777", () => {

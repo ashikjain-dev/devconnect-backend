@@ -2,9 +2,27 @@ const express = require("express");
 
 const app = express();
 
+const { userAuth, adminAuth } = require("../middlewares");
+
 //middleware to parse JSON and URL encoded data for post method
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//user and admin routes with authentication check from middlewares
+app.use("/admin", adminAuth);
+app.get("/admin/:id", (req, res) => {
+  console.log("all data displayed");
+  res.send("Displaying all data.");
+});
+app.delete("/admin/deletuser/:id", (req, res, next) => {
+  console.log("in delete route handler");
+  res.send("deleting in progress");
+});
+app.use("/user", userAuth);
+app.get("/user/:id", (req, res, next) => {
+  console.log("user is authenticated");
+  res.send("your profile is here");
+});
 
 // handles get method for a route /profile
 app.get("/profile/:id", (req, res) => {

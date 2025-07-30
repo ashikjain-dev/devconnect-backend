@@ -24,6 +24,10 @@ app.get("/user/:id", (req, res, next) => {
   res.send("your profile is here");
 });
 
+//routes to show error handles
+app.use("/account", (req, res, next) => {
+  throw new Error("Error message");
+});
 // handles get method for a route /profile
 app.get("/profile/:id", (req, res) => {
   console.log(req.query);
@@ -47,7 +51,11 @@ app.delete("/profile/:id", (req, res) => {
   console.log("id of a user to delete the profile", req.params);
   res.send("Deleted profile successfully...");
 });
-
+app.use("/", (err, req, res, next) => {
+  console.error("error from route", err);
+  console.log("req path:", req.url);
+  res.status(500).send("Something went wrong");
+});
 app.listen("7777", () => {
   console.log("The app is running on port 7777");
 });

@@ -5,9 +5,9 @@ const app = express();
 const { mongoConnect } = require("./config/mongo");
 const { User } = require("./models/user");
 
-//to read data of json and urlencoded format
+// parses the raw JSON string from the request body and converts it into a JavaScript object.
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); // 'extended: true' allows parsing nested objects and arrays
 
 //sign up a user
 app.post("/signup", async (req, res) => {

@@ -1,46 +1,11 @@
-### Get user profile
+### store a user data in mongodb user collection
 
-GET http://localhost:7777/profile/1
-
-### Put user profile
-
-POST http://localhost:7777/profile
+POST http://localhost:7777/signup
 content-Type:application/json
 
 {
-  "name":"firstName",
-  "country":"India"
+  "firstName": "Padma",
+  "lastName": "ajith",
+  "emailId": "padma@gmail.com",
+  "password": "padma23"
 }
-
-### Delete user data for id 1
-
-DELETE http://localhost:7777/profile/1
-
-
-### Update user data successfully
-
-PUT http://localhost:7777/profile
-content-Type:application/json
-
-{
-  "name":"Akshay"
-}
-
-
-### GET admin page after authentication check
-
-GET http://localhost:7777/admin/2
-
-### DELETE user data from admin page
-DELETE http://localhost:7777/admin/deletuser/2
-
-### GET user page after authentication check
-
-GET http://localhost:7777/user/4
-
-
-### Demo to handle error gracefully
-
-GET http://localhost:7777/account
-
-

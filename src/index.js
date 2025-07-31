@@ -14,12 +14,15 @@ app.post("/signup", async (req, res) => {
   try {
     console.log("req body", req.body);
     const userObj = req.body;
+    if (!userObj) {
+      throw new Error("Body should not be null or undefined.");
+    }
     const user = new User(userObj);
     await user.save();
     res.send("User data saved successfully.");
   } catch (error) {
-    console.log("error while saving a user data".error);
-    res.status(401).send("Not able to save data.");
+    console.error("error while saving a user data", error);
+    res.status(400).send("Error while saving a user data.");
   }
 });
 mongoConnect()

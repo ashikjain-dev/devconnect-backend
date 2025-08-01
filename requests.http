@@ -4,8 +4,21 @@ POST http://localhost:7777/signup
 content-Type:application/json
 
 {
-  "firstName": "Padma",
-  "lastName": "ajith",
-  "emailId": "padma@gmail.com",
-  "password": "padma23"
+  "firstName": "Ajith",
+  "lastName": "Kumar",
+  "emailId": "ajithkumar@gmail.com",
+  "password": "ajith345"
 }
+
+
+### Get a specific user details
+
+GET http://localhost:7777/profile
+content-Type:application/json
+
+{
+  "emailId":"ajithkumar@gmail.com"
+}
+
+### Gell all user details
+GET http://localhost:7777/feed

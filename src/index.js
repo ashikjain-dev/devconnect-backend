@@ -25,6 +25,37 @@ app.post("/signup", async (req, res) => {
     res.status(400).send("Error while saving a user data.");
   }
 });
+
+//display one user details
+app.get("/profile", async (req, res) => {
+  try {
+    const { emailId } = req.body;
+    const userInfo = await User.findOne({ emailId: emailId });
+    if (!userInfo) {
+      res.status(404).send("User not found.");
+    } else {
+      res.send(userInfo);
+    }
+  } catch (error) {
+    console.error("error while fetching user data", error);
+    res.status(501).send("Something went wrong.");
+  }
+});
+
+//display all user details
+app.get("/feed", async (req, res) => {
+  try {
+    const allUsers = await User.find({});
+    if (allUsers.length === 0) {
+      res.status(404).send("User details not found");
+    } else {
+      res.send(allUsers);
+    }
+  } catch (error) {
+    console.error("error while fetching all user details", error);
+    res.status(501).send("Something went wrong.");
+  }
+});
 mongoConnect()
   .then(() => {
     console.log("connection is successful.");

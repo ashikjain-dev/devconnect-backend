@@ -27,12 +27,11 @@ GET http://localhost:7777/feed
 
 
 ### Update a user profile
-PATCH  http://localhost:7777/user
+PATCH  http://localhost:7777/user/688dc10b9e1404ca943d26f3
 content-Type:application/json
 
 {
-  "id":"688dc10b9e1404ca943d26f3",
-  "lastName": "Sharma "
+  "bio": "Wife of Virat."
 }
 
 
@@ -43,3 +42,6 @@ content-Type:application/json
 {
   "id":"688dc33f8a54bfe14e77798e"
 }
+
+### delete all documents from a collection
+DELETE http://localhost:7777/allusers

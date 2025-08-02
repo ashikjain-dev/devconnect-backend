@@ -36,7 +36,7 @@ const userSchema = new Schema(
       type: [String],
       default: ["JavaScript", "NodeJs", "GitHub"],
     },
-    photo: {
+    photoUrl: {
       type: String,
       default:
         "https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg",

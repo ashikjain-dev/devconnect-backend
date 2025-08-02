@@ -56,12 +56,18 @@ app.get("/feed", async (req, res) => {
   }
 });
 
-//find the user detail by id and update details
-app.patch("/user", async (req, res) => {
+//find the user detail by id and update details. id from params field
+app.patch("/user/:userId", async (req, res) => {
   try {
-    const { id } = req.body;
+    const { userId } = req.params;
     const updateInfo = req.body;
-    const user = await User.findByIdAndUpdate(id, updateInfo, {
+    const ALLOWED_OPTIONS = ["age", "skills", "photoUrl", "password", "bio"];
+    if (!allowedUpdates(ALLOWED_OPTIONS, updateInfo)) {
+      throw new Error(
+        "Update is not allowed other than" + JSON.stringify(ALLOWED_OPTIONS)
+      );
+    }
+    const user = await User.findByIdAndUpdate(userId, updateInfo, {
       returnDocument: "after",
       runValidators: true,
     });
@@ -76,6 +82,10 @@ app.patch("/user", async (req, res) => {
   }
 });
 
+//check allowed update details for the user
+function allowedUpdates(ALLOWED_OPTIONS, updateInfo) {
+  return Object.keys(updateInfo).every((key) => ALLOWED_OPTIONS.includes(key));
+}
 //delete the user from the database by using id
 app.delete("/user", async (req, res) => {
   try {
@@ -92,6 +102,24 @@ app.delete("/user", async (req, res) => {
     console.error(error);
     res.status(500).send("Something went wrong");
   }
+});
+
+app.delete("/allusers", async (req, res) => {
+  try {
+    const count = await User.deleteMany({});
+    console.log(count);
+    if (count.deletedCount === 0) {
+      res.status(400).send("No documents found");
+    } else {
+      res.send("Deleted all documents successfully.");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Delete is not possible");
+  }
+});
+app.use("/", (req, res) => {
+  res.status(404).send("Not implemented");
 });
 mongoConnect()
   .then(() => {

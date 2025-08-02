@@ -4,10 +4,10 @@ POST http://localhost:7777/signup
 content-Type:application/json
 
 {
-  "firstName": "Ajith",
-  "lastName": "Kumar",
-  "emailId": "ajithkumar@gmail.com",
-  "password": "ajith345"
+  "firstName": "Padma",
+  "lastName": "ajith",
+  "emailId": "padma@gmail.com",
+  "password": "padma123"
 }
 
 
@@ -25,21 +25,19 @@ GET http://localhost:7777/feed
 
 
 ### Update a user profile
-POST http://localhost:7777/update
+PATCH  http://localhost:7777/user
 content-Type:application/json
 
 {
-  "firstName": "Aji",
-  "lastName": "Kumi",
-  "emailId": "ajithkumar@gmail.com",
-  "password": "ajith333"
+  "id":"688db80c0ffd750047899165",
+  "firstName": "P"
 }
 
 
 ### Delete a profile by emailId
-DELETE http://localhost:7777/delete
+DELETE http://localhost:7777/user
 content-Type:application/json
 
 {
-  "emailId":"padma@gmail.com"
+  "id":"688db80c0ffd750047899168"
 }

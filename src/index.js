@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: true })); // 'extended: true' allows pars
 //sign up a user
 app.post("/signup", async (req, res) => {
   try {
-    console.log("req body", req.body);
     const userObj = req.body;
     if (!userObj) {
       throw new Error("Body should not be null or undefined.");
@@ -57,22 +56,17 @@ app.get("/feed", async (req, res) => {
   }
 });
 
-//find the user detail by emailId and update his firstname
-app.post("/update", async (req, res) => {
+//find the user detail by id and update details
+app.patch("/user", async (req, res) => {
   try {
-    const { emailId } = req.body;
+    const { id } = req.body;
     const updateInfo = req.body;
-    console.info(updateInfo);
-    const user = await User.findOne({ emailId: emailId });
-
+    const user = await User.findByIdAndUpdate(id, updateInfo, {
+      returnDocument: "after",
+    });
     if (!user) {
       res.status(404).send("User details not found");
     } else {
-      user.firstName = updateInfo.firstName;
-      user.lastName = updateInfo.lastName;
-      user.password = updateInfo.password;
-      console.log("user info :::", user);
-      await user.save();
       res.send("Update is done ");
     }
   } catch (error) {
@@ -81,16 +75,16 @@ app.post("/update", async (req, res) => {
   }
 });
 
-//delete the user from the database
-app.delete("/delete", async (req, res) => {
+//delete the user from the database by using id
+app.delete("/user", async (req, res) => {
   try {
-    const { emailId } = req.body;
-    const user = await User.deleteOne({ emailId: emailId });
-    console.log(user);
-    if (user.deletedCount === 0) {
+    const { id } = req.body;
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user || user?.deletedCount === 0) {
       res.status(404).send("Document not found");
     } else {
-      res.send("Delete the document successfully.");
+      res.send("Deleted the document successfully.");
     }
   } catch (error) {
     console.error("error while fetching and deleting the user details");
@@ -100,7 +94,7 @@ app.delete("/delete", async (req, res) => {
 });
 mongoConnect()
   .then(() => {
-    console.log("connection is successful.");
+    console.log("connection to mongodb is successful.");
     app.listen("7777", () => {
       console.log("The app is running on port 7777");
     });

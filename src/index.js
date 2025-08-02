@@ -1,5 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 const { mongoConnect } = require("./config/mongo");
 const { User } = require("./models/user");
@@ -10,6 +12,7 @@ const app = express();
 // parses the raw JSON string from the request body and converts it into a JavaScript object.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // 'extended: true' allows parsing nested objects and arrays
+app.use(cookieParser()); //parsed cookie header and populate req.cookies with an object keyed by the cookie names.
 
 //sign up a user
 app.post("/signup", async (req, res) => {
@@ -52,10 +55,34 @@ app.post("/login", async (req, res) => {
       if (!isPassword) {
         throw new Error("Invalid credentials");
       }
+      //jwt token created and include in a cookie.
+      const token = jwt.sign({ id: userInfo.id }, "Dev1.0.Backend");
+      res.cookie("token", token, { maxAge: 120000 });
       res.send("Login is successful.");
     }
   } catch (error) {
     console.error(error);
+    res.status(401).send("ERROR : " + error.message);
+  }
+});
+
+//display the user profile
+app.get("/profile", async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    if (!token) {
+      throw new Error("Invalid token");
+    }
+    //get the payload from the token by decoding
+    const decodeData = await jwt.verify(token, "Dev1.0.Backend");
+    const { id } = decodeData;
+    const user = await User.findById(id);
+    if (!user) {
+      throw new Error("user Not found.");
+    }
+    res.send(user);
+  } catch (error) {
+    console.error(error.message);
     res.status(401).send("ERROR : " + error.message);
   }
 });

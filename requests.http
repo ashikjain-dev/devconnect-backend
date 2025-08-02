@@ -4,10 +4,10 @@ POST http://localhost:7777/signup
 content-Type:application/json
 
 {
-  "firstName": "Ashk",
-  "lastName":"Jain",
-  "emailId": "ashik.jain@gmail.com",
-  "password": "Ashik12345@"
+    "firstName": "Virat",
+    "lastName": "Kholi",
+    "emailId": "virat.kohli@gmail.com",
+    "password": "viraT@456"
 }
 
 ### Login to user profile
@@ -15,18 +15,14 @@ POST http://localhost:7777/login
 content-Type:application/json
 
 {
-  "emailId":"ashik.jain@gmail.com",
-  "password":"Ashik12345@"
+  "emailId":"virat.kohli@gmail.com",
+  "password":"viraT@456"
 }
 
+### Get a user profile
+GET http://localhost:7777/profile
 ### Get a specific user details
 
-GET http://localhost:7777/profile
-content-Type:application/json
-
-{
-  "emailId":"ajithkumar@gmail.com"
-}
 
 ### Gell all user details
 GET http://localhost:7777/feed

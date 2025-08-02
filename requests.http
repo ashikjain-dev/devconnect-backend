@@ -22,3 +22,24 @@ content-Type:application/json
 
 ### Gell all user details
 GET http://localhost:7777/feed
+
+
+### Update a user profile
+POST http://localhost:7777/update
+content-Type:application/json
+
+{
+  "firstName": "Aji",
+  "lastName": "Kumi",
+  "emailId": "ajithkumar@gmail.com",
+  "password": "ajith333"
+}
+
+
+### Delete a profile by emailId
+DELETE http://localhost:7777/delete
+content-Type:application/json
+
+{
+  "emailId":"padma@gmail.com"
+}

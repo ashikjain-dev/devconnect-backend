@@ -30,7 +30,7 @@ app.post("/signup", async (req, res) => {
 app.get("/profile", async (req, res) => {
   try {
     const { emailId } = req.body;
-    const userInfo = await User.findOne({ emailId: emailId });
+    const userInfo = await User.findOne({});
     if (!userInfo) {
       res.status(404).send("User not found.");
     } else {
@@ -54,6 +54,48 @@ app.get("/feed", async (req, res) => {
   } catch (error) {
     console.error("error while fetching all user details", error);
     res.status(501).send("Something went wrong.");
+  }
+});
+
+//find the user detail by emailId and update his firstname
+app.post("/update", async (req, res) => {
+  try {
+    const { emailId } = req.body;
+    const updateInfo = req.body;
+    console.info(updateInfo);
+    const user = await User.findOne({ emailId: emailId });
+
+    if (!user) {
+      res.status(404).send("User details not found");
+    } else {
+      user.firstName = updateInfo.firstName;
+      user.lastName = updateInfo.lastName;
+      user.password = updateInfo.password;
+      console.log("user info :::", user);
+      await user.save();
+      res.send("Update is done ");
+    }
+  } catch (error) {
+    console.error("error while update the data", error);
+    res.status(501).send("Something went wrong");
+  }
+});
+
+//delete the user from the database
+app.delete("/delete", async (req, res) => {
+  try {
+    const { emailId } = req.body;
+    const user = await User.deleteOne({ emailId: emailId });
+    console.log(user);
+    if (user.deletedCount === 0) {
+      res.status(404).send("Document not found");
+    } else {
+      res.send("Delete the document successfully.");
+    }
+  } catch (error) {
+    console.error("error while fetching and deleting the user details");
+    console.error(error);
+    res.status(500).send("Something went wrong");
   }
 });
 mongoConnect()

@@ -1,16 +1,40 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
-    firstName: { type: String, required: true, trim: true, minLength: 5 },
-    lastName: { type: String, trim: true },
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+      minLength: 5,
+      validate(value) {
+        if (validator.isEmpty(value)) {
+          throw new Error("first Name cannot be empty.");
+        }
+      },
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      validate(value) {
+        if (validator.isEmpty(value)) {
+          throw new Error("last name cannot be empty.");
+        }
+      },
+    },
     emailId: {
       type: String,
       required: true,
       unique: true,
       trim: true,
       lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Email is not valid {VALUE}");
+        }
+      },
     },
     password: {
       type: String,
@@ -18,6 +42,13 @@ const userSchema = new Schema(
       minLength: 8,
       maxLength: 18,
       trim: true,
+      validate(value) {
+        if (!validator.isStrongPassword(value)) {
+          throw new Error(
+            "Password must have 8 chars, 1 caps,1 small ,1 symbol and a number atleast."
+          );
+        }
+      },
     },
     age: { type: Number, min: 14 },
     gender: {
@@ -40,6 +71,11 @@ const userSchema = new Schema(
       type: String,
       default:
         "https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg",
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error("Image url should be valid");
+        }
+      },
     },
   },
   { timestamps: true }

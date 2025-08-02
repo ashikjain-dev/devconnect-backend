@@ -4,11 +4,11 @@ POST http://localhost:7777/signup
 content-Type:application/json
 
 {
-  "firstName": "Dhoni",
-  "emailId": " dni@gmail.com ",
-  "password": "Dhoni3478",
-  "gender":"male",
-  "skills":["Cricket","Cool"]
+  "firstName": "Akshay",
+  "lastName":"Jain",
+  "emailId": " akshay.jain@gmail.com",
+  "password": "Akshay23@",
+  "gender":"male"
   
 }
 
@@ -27,11 +27,11 @@ GET http://localhost:7777/feed
 
 
 ### Update a user profile
-PATCH  http://localhost:7777/user/688dc10b9e1404ca943d26f3
+PATCH  http://localhost:7777/user/688dded7252a91833ee4e997
 content-Type:application/json
 
 {
-  "bio": "Wife of Virat."
+  "photoUrl":"https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg"
 }
 
 

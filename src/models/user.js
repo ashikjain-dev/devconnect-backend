@@ -8,7 +8,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       trim: true,
-      minLength: 5,
+      minLength: 4,
       validate(value) {
         if (validator.isEmpty(value)) {
           throw new Error("first Name cannot be empty.");
@@ -40,7 +40,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
       minLength: 8,
-      maxLength: 18,
       trim: true,
       validate(value) {
         if (!validator.isStrongPassword(value)) {

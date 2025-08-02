@@ -4,14 +4,20 @@ POST http://localhost:7777/signup
 content-Type:application/json
 
 {
-  "firstName": "Akshay",
+  "firstName": "Ashk",
   "lastName":"Jain",
-  "emailId": " akshay.jain@gmail.com",
-  "password": "Akshay23@",
-  "gender":"male"
-  
+  "emailId": "ashik.jain@gmail.com",
+  "password": "Ashik12345@"
 }
 
+### Login to user profile
+POST http://localhost:7777/login
+content-Type:application/json
+
+{
+  "emailId":"ashik.jain@gmail.com",
+  "password":"Ashik12345@"
+}
 
 ### Get a specific user details
 

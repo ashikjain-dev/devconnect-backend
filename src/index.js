@@ -1,9 +1,11 @@
 const express = require("express");
-
-const app = express();
+const bcrypt = require("bcrypt");
 
 const { mongoConnect } = require("./config/mongo");
 const { User } = require("./models/user");
+const { isValidateUser, isValidLogin } = require("./util/userValidation");
+
+const app = express();
 
 // parses the raw JSON string from the request body and converts it into a JavaScript object.
 app.use(express.json());
@@ -12,19 +14,51 @@ app.use(express.urlencoded({ extended: true })); // 'extended: true' allows pars
 //sign up a user
 app.post("/signup", async (req, res) => {
   try {
-    const userObj = req.body;
-    if (!userObj) {
-      throw new Error("Body should not be null or undefined.");
+    const { firstName, lastName, emailId, password } = req.body;
+    //validation of req.body
+    if (isValidateUser(req)) {
+      //encrypt user password using bcrypt
+      const saltRounds = 10;
+      const hashPassword = await bcrypt.hash(password, saltRounds);
+      //save hashpassword in the DB
+      const user = new User({
+        firstName,
+        lastName,
+        emailId,
+        password: hashPassword,
+      });
+      await user.save();
+      res.send("User data saved successfully.");
     }
-    const user = new User(userObj);
-    await user.save();
-    res.send("User data saved successfully.");
   } catch (error) {
     console.error("error while saving a user data", error);
     res.status(400).send(error.message);
   }
 });
+//signin a user
+app.post("/login", async (req, res) => {
+  try {
+    //validation of email
+    const { emailId, password } = req.body;
 
+    if (isValidLogin(req)) {
+      //user details fetch from DB by using emailId
+      const userInfo = await User.findOne({ emailId });
+      if (!userInfo) {
+        throw new Error("Invalid credentials");
+      }
+      //compare user password with hashpassword
+      const isPassword = await bcrypt.compare(password, userInfo.password);
+      if (!isPassword) {
+        throw new Error("Invalid credentials");
+      }
+      res.send("Login is successful.");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(401).send("ERROR : " + error.message);
+  }
+});
 //display one user details
 app.get("/profile", async (req, res) => {
   try {

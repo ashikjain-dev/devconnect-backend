@@ -21,7 +21,7 @@ app.post("/signup", async (req, res) => {
     res.send("User data saved successfully.");
   } catch (error) {
     console.error("error while saving a user data", error);
-    res.status(400).send("Error while saving a user data.");
+    res.status(400).send(error.message);
   }
 });
 
@@ -63,6 +63,7 @@ app.patch("/user", async (req, res) => {
     const updateInfo = req.body;
     const user = await User.findByIdAndUpdate(id, updateInfo, {
       returnDocument: "after",
+      runValidators: true,
     });
     if (!user) {
       res.status(404).send("User details not found");
@@ -71,7 +72,7 @@ app.patch("/user", async (req, res) => {
     }
   } catch (error) {
     console.error("error while update the data", error);
-    res.status(501).send("Something went wrong");
+    res.status(400).send(error.message);
   }
 });
 

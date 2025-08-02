@@ -4,10 +4,12 @@ POST http://localhost:7777/signup
 content-Type:application/json
 
 {
-  "firstName": "Padma",
-  "lastName": "ajith",
-  "emailId": "padma@gmail.com",
-  "password": "padma123"
+  "firstName": "Dhoni",
+  "emailId": " dni@gmail.com ",
+  "password": "Dhoni3478",
+  "gender":"male",
+  "skills":["Cricket","Cool"]
+  
 }
 
 
@@ -29,8 +31,8 @@ PATCH  http://localhost:7777/user
 content-Type:application/json
 
 {
-  "id":"688db80c0ffd750047899165",
-  "firstName": "P"
+  "id":"688dc10b9e1404ca943d26f3",
+  "lastName": "Sharma "
 }
 
 
@@ -39,5 +41,5 @@ DELETE http://localhost:7777/user
 content-Type:application/json
 
 {
-  "id":"688db80c0ffd750047899168"
+  "id":"688dc33f8a54bfe14e77798e"
 }

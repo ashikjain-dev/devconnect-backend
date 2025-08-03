@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../src/models/user");
 const adminAuth = (req, res, next) => {
   console.log("in admin auth middleware");
-  const auth = true;
+  const auth = false;
   if (!auth) {
     res.status(401).send("you are not the admin.");
   } else {
@@ -15,7 +15,7 @@ const userAuth = async (req, res, next) => {
     //get token from cookies
     const { token } = req.cookies;
     if (!token) {
-      throw new Error("Invalid jwt token");
+      throw new Error("Invalid credentials");
     }
     //decode the data object from the token
     const decodedObj = await jwt.verify(token, process.env.JWT_SECRET_KEY);

@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const { mongoConnect } = require("./config/mongo");
 const { User } = require("./models/user");
 const { isValidateUser, isValidLogin } = require("./util/userValidation");
-const { userAuth } = require("../middlewares/index");
+const { userAuth, adminAuth } = require("../middlewares/index");
 
 const app = express();
 
@@ -32,6 +32,9 @@ app.post("/signup", async (req, res) => {
         password: hashPassword,
       });
       await user.save();
+      //get jwt token and store it in cookie
+      const token = await user.getJWT();
+      res.cookie("token", token, { maxAge: 900000 }); //15 mins
       res.send("User data saved successfully.");
     }
   } catch (error) {
@@ -58,7 +61,7 @@ app.post("/login", async (req, res) => {
       }
       //jwt token created and include in a cookie.
       const token = await userInfo.getJWT();
-      res.cookie("token", token, { maxAge: 120000 });
+      res.cookie("token", token, { maxAge: 900000 });
       res.send("Login is successful.");
     }
   } catch (error) {
@@ -89,6 +92,16 @@ app.post("/sendConnectionReq", userAuth, async (req, res) => {
   }
 });
 
+//logout from the user profile
+app.post("/logout", userAuth, async (req, res) => {
+  try {
+    res.clearCookie("token");
+    res.send("Logout successfully.");
+  } catch (error) {
+    console.error(error.message);
+    res.status(401).send("ERROR : " + error.message);
+  }
+});
 //delete the user from the database by using id
 app.delete("/user", async (req, res) => {
   try {
@@ -107,7 +120,7 @@ app.delete("/user", async (req, res) => {
   }
 });
 
-app.delete("/allusers", async (req, res) => {
+app.delete("/allusers", adminAuth, async (req, res) => {
   try {
     const count = await User.deleteMany({});
     console.log(count);

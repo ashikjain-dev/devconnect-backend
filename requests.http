@@ -47,3 +47,7 @@ content-Type:application/json
 
 ### delete all documents from a collection
 DELETE http://localhost:7777/allusers
+
+
+### Send a connection request
+POST http://localhost:7777/sendConnectionReq

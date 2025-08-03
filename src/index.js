@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { mongoConnect } = require("./config/mongo");
 const { User } = require("./models/user");
 const { isValidateUser, isValidLogin } = require("./util/userValidation");
+const { userAuth } = require("../middlewares/index");
 
 const app = express();
 
@@ -56,7 +57,7 @@ app.post("/login", async (req, res) => {
         throw new Error("Invalid credentials");
       }
       //jwt token created and include in a cookie.
-      const token = jwt.sign({ id: userInfo.id }, "Dev1.0.Backend");
+      const token = jwt.sign({ id: userInfo.id }, process.env.JWT_SECRET_KEY);
       res.cookie("token", token, { maxAge: 120000 });
       res.send("Login is successful.");
     }
@@ -67,86 +68,27 @@ app.post("/login", async (req, res) => {
 });
 
 //display the user profile
-app.get("/profile", async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
   try {
-    const { token } = req.cookies;
-    if (!token) {
-      throw new Error("Invalid token");
-    }
-    //get the payload from the token by decoding
-    const decodeData = await jwt.verify(token, "Dev1.0.Backend");
-    const { id } = decodeData;
-    const user = await User.findById(id);
-    if (!user) {
-      throw new Error("user Not found.");
-    }
+    const user = req.user;
     res.send(user);
   } catch (error) {
     console.error(error.message);
     res.status(401).send("ERROR : " + error.message);
   }
 });
-//display one user details
-app.get("/profile", async (req, res) => {
+
+//send a connection request
+app.post("/sendConnectionReq", userAuth, async (req, res) => {
   try {
-    const { emailId } = req.body;
-    const userInfo = await User.findOne({});
-    if (!userInfo) {
-      res.status(404).send("User not found.");
-    } else {
-      res.send(userInfo);
-    }
+    const user = req.user;
+    res.send(user.firstName + " sending the connection request");
   } catch (error) {
-    console.error("error while fetching user data", error);
-    res.status(501).send("Something went wrong.");
+    console.error(error);
+    res.status(401).send("ERROR : " + error.message);
   }
 });
 
-//display all user details
-app.get("/feed", async (req, res) => {
-  try {
-    const allUsers = await User.find({});
-    if (allUsers.length === 0) {
-      res.status(404).send("User details not found");
-    } else {
-      res.send(allUsers);
-    }
-  } catch (error) {
-    console.error("error while fetching all user details", error);
-    res.status(501).send("Something went wrong.");
-  }
-});
-
-//find the user detail by id and update details. id from params field
-app.patch("/user/:userId", async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const updateInfo = req.body;
-    const ALLOWED_OPTIONS = ["age", "skills", "photoUrl", "password", "bio"];
-    if (!allowedUpdates(ALLOWED_OPTIONS, updateInfo)) {
-      throw new Error(
-        "Update is not allowed other than" + JSON.stringify(ALLOWED_OPTIONS)
-      );
-    }
-    const user = await User.findByIdAndUpdate(userId, updateInfo, {
-      returnDocument: "after",
-      runValidators: true,
-    });
-    if (!user) {
-      res.status(404).send("User details not found");
-    } else {
-      res.send("Update is done ");
-    }
-  } catch (error) {
-    console.error("error while update the data", error);
-    res.status(400).send(error.message);
-  }
-});
-
-//check allowed update details for the user
-function allowedUpdates(ALLOWED_OPTIONS, updateInfo) {
-  return Object.keys(updateInfo).every((key) => ALLOWED_OPTIONS.includes(key));
-}
 //delete the user from the database by using id
 app.delete("/user", async (req, res) => {
   try {

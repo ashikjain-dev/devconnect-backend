@@ -52,12 +52,12 @@ app.post("/login", async (req, res) => {
         throw new Error("Invalid credentials");
       }
       //compare user password with hashpassword
-      const isPassword = await bcrypt.compare(password, userInfo.password);
+      const isPassword = await userInfo.comparePassword(password);
       if (!isPassword) {
         throw new Error("Invalid credentials");
       }
       //jwt token created and include in a cookie.
-      const token = jwt.sign({ id: userInfo.id }, process.env.JWT_SECRET_KEY);
+      const token = await userInfo.getJWT();
       res.cookie("token", token, { maxAge: 120000 });
       res.send("Login is successful.");
     }

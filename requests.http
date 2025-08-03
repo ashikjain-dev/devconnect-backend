@@ -4,10 +4,10 @@ POST http://localhost:7777/signup
 content-Type:application/json
 
 {
-    "firstName": "Virat",
-    "lastName": "Kholi",
-    "emailId": "virat.kohli@gmail.com",
-    "password": "viraT@456"
+    "firstName": "Rahul",
+    "lastName": "KL",
+    "emailId": "kl.rahul@gmail.com",
+    "password": "rahuL@456"
 }
 
 ### Login to user profile
@@ -15,8 +15,8 @@ POST http://localhost:7777/login
 content-Type:application/json
 
 {
-  "emailId":"virat.kohli@gmail.com",
-  "password":"viraT@456"
+  "emailId":"kl.rahul@gmail.com",
+  "password":"rahuL@456"
 }
 
 ### Get a user profile

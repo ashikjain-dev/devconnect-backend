@@ -4,10 +4,10 @@ POST http://localhost:7777/signup
 content-Type:application/json
 
 {
-    "firstName": "Rahul",
-    "lastName": "KL",
-    "emailId": "kl.rahul@gmail.com",
-    "password": "rahuL@456"
+    "firstName": "some",
+    "lastName": "name",
+    "emailId": "some@gmail.com",
+    "password": "randoM$23"
 }
 
 ### Login to user profile
@@ -20,21 +20,23 @@ content-Type:application/json
 }
 
 ### Get a user profile
-GET http://localhost:7777/profile
+GET http://localhost:7777/profile/view
 ### Get a specific user details
 
+### Update a user profile
+PATCH  http://localhost:7777/profile/edit
+content-Type:application/json
+
+{ 
+  "bio":"I am nothing in this world",
+  "age":15
+}
 
 ### Gell all user details
 GET http://localhost:7777/feed
 
 
-### Update a user profile
-PATCH  http://localhost:7777/user/688dded7252a91833ee4e997
-content-Type:application/json
 
-{
-  "photoUrl":"https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg"
-}
 
 
 ### Delete a profile by emailId

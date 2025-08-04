@@ -1,11 +1,11 @@
 const express = require("express");
 const { User } = require("../models/user");
 const { userAuth } = require("../../middlewares");
-
+const { editFieldsCheck } = require("../../middlewares/user");
 const userRouter = express.Router();
 
 //display the user profile
-userRouter.get("/profile", userAuth, async (req, res) => {
+userRouter.get("/profile/view", userAuth, async (req, res) => {
   try {
     const user = req.user;
     res.send(user);
@@ -14,6 +14,31 @@ userRouter.get("/profile", userAuth, async (req, res) => {
     res.status(401).send("ERROR : " + error.message);
   }
 });
+
+//edit a user profile
+userRouter.patch(
+  "/profile/edit",
+  userAuth,
+  editFieldsCheck,
+  async (req, res) => {
+    try {
+      const loggedInUser = req.user;
+      //  console.log("loggedInUser details before :", loggedInUser);
+      Object.keys(req.body).forEach(
+        (field) => (loggedInUser[field] = req.body[field])
+      );
+      //  console.log("loggedInUser details after :", loggedInUser);
+      await loggedInUser.save();
+      res.json({
+        message: `${loggedInUser.firstName}, your profile has been updated`,
+        data: loggedInUser,
+      });
+    } catch (error) {
+      console.error(error.message);
+      res.status(401).send("ERROR : " + error.message);
+    }
+  }
+);
 
 //delete the user from the database by using id
 userRouter.delete("/profile", userAuth, async (req, res) => {

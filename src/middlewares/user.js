@@ -1,4 +1,4 @@
-const { validateUserInput } = require("../src/util/updateUserValidation");
+const { validateUserInput } = require("../util/updateUserValidation");
 const validator = require("validator");
 const editFieldsCheck = (req, res, next) => {
   try {

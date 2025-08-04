@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { User } = require("../src/models/user");
+const { User } = require("../models/user");
 const adminAuth = (req, res, next) => {
   console.log("in admin auth middleware");
   const auth = false;

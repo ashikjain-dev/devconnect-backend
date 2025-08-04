@@ -16,7 +16,7 @@ content-Type:application/json
 
 {
   "emailId":"kl.rahul@gmail.com",
-  "password":"rahuL@456"
+  "password":"RHHHash23^"
 }
 
 ### Get a user profile
@@ -30,6 +30,16 @@ content-Type:application/json
 { 
   "bio":"I am nothing in this world",
   "age":15
+}
+
+### update a user password
+PATCH  http://localhost:7777/profile/updatePassword
+content-Type:application/json
+
+{
+  "currentPassword":"RHHHash23^",
+  "newPassword":"RHHHash23^",
+  "confirmPassword":"RHHHash23^"
 }
 
 ### Gell all user details

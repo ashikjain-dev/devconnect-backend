@@ -1,7 +1,11 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const { User } = require("../models/user");
 const { userAuth } = require("../../middlewares");
-const { editFieldsCheck } = require("../../middlewares/user");
+const {
+  editFieldsCheck,
+  allowedFieldsForPasswordCheck,
+} = require("../../middlewares/user");
 const userRouter = express.Router();
 
 //display the user profile
@@ -39,7 +43,26 @@ userRouter.patch(
     }
   }
 );
-
+//update only password
+userRouter.patch(
+  "/profile/updatePassword",
+  userAuth,
+  allowedFieldsForPasswordCheck,
+  async (req, res, next) => {
+    try {
+      const user = req.user;
+      const { newPassword } = req.body;
+      const saltRounds = 10;
+      const passwordHash = await bcrypt.hash(newPassword, saltRounds);
+      user.password = passwordHash;
+      user.save();
+      res.send(`${user.firstName} your password has been updated successfully`);
+    } catch (error) {
+      console.error(error.message);
+      res.status(401).send("ERROR : " + error.message);
+    }
+  }
+);
 //delete the user from the database by using id
 userRouter.delete("/profile", userAuth, async (req, res) => {
   try {

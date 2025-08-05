@@ -16,6 +16,7 @@ const connectionRequestSchema = new Schema(
       required: true,
       enum: {
         values: ["interested", "ignored", "accepted", "rejected"],
+        lowercase: true,
         message: "{VALUE} is not of required type",
       },
     },

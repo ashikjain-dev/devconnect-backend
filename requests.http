@@ -62,7 +62,7 @@ DELETE http://localhost:7777/allusers
 
 
 ### Send a connection request
-POST http://localhost:7777/sendConnectionReq
+POST http://localhost:7777/connectionrequest/interested/68902dcd95a9e4cd4692ca00
 
 
 ### Logout from the session

@@ -18,6 +18,10 @@ content-Type:application/json
   "emailId":"kl.rahul@gmail.com",
   "password":"RHHHash23^"
 }
+//"emailId":"kl.rahul@gmail.com",
+  //"password":"RHHHash23^"
+  //"emailId": "some@gmail.com",
+   // "password": "randoM$23"
 
 ### Get a user profile
 GET http://localhost:7777/profile/view
@@ -66,8 +70,17 @@ POST http://localhost:7777/connectionrequest/interested/
 
 
 ### Action on the existing connection request
-POST http://localhost:7777/connectionrequest/review/rejected/68917abbabe645ce95534102
+POST http://localhost:7777/connectionrequest/review/accepted/68917abbabe645ce95534102
 
 
 ### Logout from the session
 POST http://localhost:7777/logout
+
+
+### To get connection which are in accepted state for the loggedin user
+GET http://localhost:7777/user/connection/accepted
+
+
+### User Connection Request which are in interested state
+
+GET http://localhost:7777/user/connection/interested

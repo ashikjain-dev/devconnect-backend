@@ -3,10 +3,12 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 
 const { mongoConnect } = require("./config/mongo");
-
-const { authRouter } = require("./routes/auth");
-const { requestRouter } = require("./routes/request");
-const { userRouter } = require("./routes/user");
+const {
+  authRouter,
+  requestRouter,
+  userRouter,
+  userConnectionRouter,
+} = require("./routes/");
 
 const app = express();
 
@@ -15,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // 'extended: true' allows parsing nested objects and arrays
 app.use(cookieParser()); //parsed cookie header and populate req.cookies with an object keyed by the cookie names.
 
-app.use("/", authRouter, userRouter, requestRouter);
+app.use("/", authRouter, userRouter, requestRouter, userConnectionRouter);
 app.use("/", (req, res) => {
   res.status(404).send("Not implemented");
 });

@@ -2,6 +2,7 @@ const express = require("express");
 
 const { userAuth } = require("../middlewares/");
 const { ConnectionRequest } = require("../models/connectionRequest");
+const { User } = require("../models/user");
 
 const userConnectionRouter = express.Router();
 //data send from api
@@ -73,6 +74,46 @@ userConnectionRouter.get(
   }
 );
 
+//feed users to the loggedIn user
+userConnectionRouter.get("/feed", userAuth, async (req, res) => {
+  try {
+    const loggedInUser = req.user;
+    const page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    limit = limit > 50 ? 10 : limit;
+    const skip = (page - 1) * limit;
+    //get user connection for the loggedInuser
+    const connectionExist = await ConnectionRequest.find({
+      $or: [
+        {
+          fromUserId: loggedInUser.id,
+        },
+        { toUserId: loggedInUser.id },
+      ],
+    });
+    //store unique user from connectionExist in a set
+    let hideUserFromFeed = new Set();
+    connectionExist.map((row) => {
+      hideUserFromFeed.add(row.fromUserId.toString());
+      hideUserFromFeed.add(row.toUserId.toString());
+    });
+    //query user collection and fetch user details other than users from the set
+    const data = await User.find({
+      $and: [
+        { _id: { $nin: Array.from(hideUserFromFeed) } },
+        { _id: { $ne: loggedInUser.id } },
+      ],
+    })
+      .select(dataArray)
+      .skip(skip)
+      .limit(limit);
+
+    res.json({ message: "You can send request to these people", data });
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).send("ERROR : " + error.message);
+  }
+});
 module.exports = {
   userConnectionRouter,
 };

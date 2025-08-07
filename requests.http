@@ -84,3 +84,7 @@ GET http://localhost:7777/user/connection/accepted
 ### User Connection Request which are in interested state
 
 GET http://localhost:7777/user/connection/interested
+
+
+### feed api
+GET http://localhost:7777/feed?page=0&limit=2

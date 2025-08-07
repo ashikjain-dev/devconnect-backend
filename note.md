@@ -24,3 +24,15 @@ GET http://localhost:7777/user/connection/accepted
 GET http://localhost:7777/user/connection/interested
 
 - Get all connection of the existing user which are in interested state
+
+# User feed
+
+GET http://localhost:777/feed?page=2&limit=10
+
+- Query user collection and get the loggedIn user connection along with fromUserId and toUserId
+- It must include every state
+- query user collection and fetch users who are not in the user connection.
+- and also not include loggedIn user
+- use nin and nte mongoose operator
+- use select to send required fields as response
+- use skip and method to implement pagination

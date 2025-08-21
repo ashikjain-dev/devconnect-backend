@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 const cookieParser = require("cookie-parser");
 
@@ -11,7 +12,13 @@ const {
 } = require("./routes/");
 
 const app = express();
-
+//pass options to cors which allows frontend domain and send credentials too
+const corsOptions = {
+  origin: "http://localhost:5173", //allow request only from this site
+  credentials: true, // Allow sending cookies/authorization headers
+};
+//Enable cors for all routes and origins
+app.use(cors(corsOptions));
 // parses the raw JSON string from the request body and converts it into a JavaScript object.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // 'extended: true' allows parsing nested objects and arrays

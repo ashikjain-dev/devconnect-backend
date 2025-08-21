@@ -52,7 +52,7 @@ authRouter.post("/login", async (req, res) => {
       //jwt token created and include in a cookie.
       const token = await userInfo.getJWT();
       res.cookie("token", token, { maxAge: 900000 });
-      res.send("Login is successful.");
+      res.json({ message: "login is success", data: userInfo });
     }
   } catch (error) {
     console.error(error);

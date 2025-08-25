@@ -64,9 +64,7 @@ userConnectionRouter.get(
       const interestedConnection = await ConnectionRequest.find({
         $or: [{ toUserId: loggedInUser.id, status: "interested" }],
       }).populate("fromUserId", dataArray);
-      const data = interestedConnection.map((row) => row.fromUserId);
-
-      res.json({ data });
+      res.json({ interestedConnection });
     } catch (error) {
       console.error(error.message);
       res.status(401).send("ERROR : " + error.message);

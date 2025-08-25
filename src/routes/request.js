@@ -19,7 +19,11 @@ requestRouter.post(
         status: req.params.status,
       });
       await connection.save();
-      res.send(user.firstName + " sending the connection request");
+
+      res.json({
+        msg: user.firstName + " sending the connection request",
+        connection,
+      });
     } catch (error) {
       console.error(error);
       res.status(401).send("ERROR : " + error.message);

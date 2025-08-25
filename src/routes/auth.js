@@ -25,7 +25,7 @@ authRouter.post("/signup", async (req, res) => {
       //get jwt token and store it in cookie
       const token = await user.getJWT();
       res.cookie("token", token, { maxAge: 900000 }); //15 mins
-      res.send("User data saved successfully.");
+      res.json({ msg: "User data saved successfully.", user });
     }
   } catch (error) {
     console.error("error while saving a user data", error);

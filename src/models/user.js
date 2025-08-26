@@ -84,7 +84,7 @@ const userSchema = new Schema(
 //to create jwt token and include user.id
 userSchema.methods.getJWT = async function () {
   const user = this;
-  const token = jwt.sign({ id: user.id }, "Dev1.0.Backend", {
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, {
     expiresIn: "1h",
   });
   return token;

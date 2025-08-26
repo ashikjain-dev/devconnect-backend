@@ -18,7 +18,7 @@ const userAuth = async (req, res, next) => {
       throw new Error("Invalid credentials");
     }
     //decode the data object from the token
-    const decodedObj = await jwt.verify(token, "Dev1.0.Backend");
+    const decodedObj = await jwt.verify(token, process.env.JWT_SECRET_KEY);
     const { id } = decodedObj;
     //find the user in the DB
     const user = await User.findById(id);

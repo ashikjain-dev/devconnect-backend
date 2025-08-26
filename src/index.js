@@ -14,7 +14,7 @@ const {
 const app = express();
 //pass options to cors which allows frontend domain and send credentials too
 const corsOptions = {
-  origin: "http://localhost:5173", //allow request only from this site
+  origin: ["http://localhost:5173", "http://13.201.103.69"], //allow request only from this site
   credentials: true, // Allow sending cookies/authorization headers
 };
 //Enable cors for all routes and origins

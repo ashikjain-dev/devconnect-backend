@@ -1,4 +1,6 @@
 const express = require("express");
+const { createServer } = require("node:http");
+const { Server } = require("socket.io");
 const cors = require("cors");
 
 const cookieParser = require("cookie-parser");
@@ -12,6 +14,7 @@ const {
 } = require("./routes/");
 
 const app = express();
+const server = createServer(app);
 //pass options to cors which allows frontend domain and send credentials too
 const corsOptions = {
   origin: ["http://localhost:5173", "http://13.201.103.69"], //allow request only from this site
@@ -31,7 +34,7 @@ app.use("/", (req, res) => {
 mongoConnect()
   .then(() => {
     console.log("connection to mongodb is successful.");
-    app.listen("7777", () => {
+    server.listen("7777", () => {
       console.log("The app is running on port 7777");
     });
   })

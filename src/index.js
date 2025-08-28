@@ -12,6 +12,7 @@ const {
   requestRouter,
   userRouter,
   userConnectionRouter,
+  getAllChats,
 } = require("./routes/");
 
 const app = express();
@@ -31,7 +32,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // 'extended: true' allows parsing nested objects and arrays
 app.use(cookieParser()); //parsed cookie header and populate req.cookies with an object keyed by the cookie names.
 
-app.use("/", authRouter, userRouter, requestRouter, userConnectionRouter);
+app.use(
+  "/",
+  authRouter,
+  userRouter,
+  requestRouter,
+  userConnectionRouter,
+  getAllChats
+);
 app.use("/", (req, res) => {
   res.status(404).send("Not implemented");
 });
